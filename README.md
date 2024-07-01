@@ -31,10 +31,10 @@ poetry install
 To run the FastAPI application:
 
 ```bash
-poetry run uvicorn app.main:app --reload --port:8000
+poetry run uvicorn app.main:app --reload --port 8000
 ```
 
-This command will start the Uvicorn server with `--reload` option to enable auto-reload on code changes.
+This command will start the Uvicorn server with `--reload` option to enable auto-reload on code changes and the application runs at port 8000.
 
 ## Project Structure
 
