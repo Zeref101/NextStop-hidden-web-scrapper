@@ -1,6 +1,10 @@
 from bs4 import BeautifulSoup
 import requests
 from fastapi import APIRouter
+from app.services.location_of_places import get_location_type
+from app.services.get_places_by_place_name import find_places_in_place_name
+from app.services.get_places_by_state_name import find_places_in_state_name
+
 import re
 
 router = APIRouter()
@@ -8,30 +12,15 @@ router = APIRouter()
 
 @router.get("/places/{location}")
 async def get_places_to_visit(location: str):
-    url = f"https://www.holidify.com/places/{location}/sightseeing-and-things-to-do.html"
 
-    response = requests.get(url)
+    location_details = get_location_type(location)
 
-    soup = BeautifulSoup(response.content, 'html.parser')
+    print(location_details)
 
-    places_divs = soup.find_all('div', 'col-12 col-md-6 pr-md-3')
+    if location_details.get("city_rural_urban_county") != None:
+        res = find_places_in_place_name(location)
+        return res
 
-    places_info = []
-
-    for div in places_divs:
-        title = div.find('h3', class_='card-heading').text.strip()
-        title = re.sub(r'^\d+\.\s*', '', title)
-
-        img_url = div.find('img', class_='card-img-top')['data-original']
-
-        description = div.find('p', class_='card-text').text.strip()
-
-        places_dict = {
-            'title': title,
-            'img_url': img_url,
-            'description': description
-        }
-
-        places_info.append(places_dict)
-
-    return places_info
+    elif location_details.get("city_rural_urban_county") == None and location_details.get("state") != None:
+        res = find_places_in_state_name(location)
+        return res
