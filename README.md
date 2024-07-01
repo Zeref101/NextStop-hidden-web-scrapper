@@ -20,8 +20,6 @@ git clone https://github.com/Zeref101/NextStop-hidden-web-scrapper.git
 cd NextStop-hidden-web-scrapper
 ```
 
-````
-
 2. Install dependencies using Poetry:
 
 ```bash
@@ -56,4 +54,3 @@ This command will start the Uvicorn server with `--reload` option to enable auto
 ## API Documentation
 
 Once the application is running, you can visit `http://127.0.0.1:8000/docs` in your web browser to view the automatic interactive API documentation provided by Swagger UI.
-````
