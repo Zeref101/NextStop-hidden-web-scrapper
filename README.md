@@ -43,10 +43,10 @@ This command will start the Uvicorn server with `--reload` option to enable auto
 ├── app
 │   ├── __init__.py
 │   ├── main.py          # Entry point of the FastAPI app
-│   ├── models.py        # Database models
-│   ├── schemas.py       # Pydantic models for request and response data
+|   ├── services         # functions used by services
 │   └── routes           # Web route definitions
 │       └── __init__.py
+
 ├── pyproject.toml       # Poetry dependency file
 └── README.md
 ```
