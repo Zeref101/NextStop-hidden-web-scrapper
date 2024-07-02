@@ -10,6 +10,13 @@ def find_places_in_state_name(location: str):
     url = f"https://www.holidify.com/state/{location}/top-destinations-places-to-visit.html"
     response = requests.get(url)
 
+    if response.status_code == 404:
+        url2 = f"https://www.holidify.com/places/{location}/sightseeing-and-things-to-do.html"
+        response = requests.get(url2)
+
+    if response.status_code == 404:
+        return {"error": "Location not found"}
+
     soup = BeautifulSoup(response.content, 'html.parser')
 
     places_divs = soup.find_all('div', 'col-12 col-md-6 pr-md-3')

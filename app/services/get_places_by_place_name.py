@@ -7,6 +7,9 @@ def find_places_in_place_name(location: str):
     url = f"https://www.holidify.com/places/{location}/sightseeing-and-things-to-do.html"
     response = requests.get(url)
 
+    if response.status_code == 404:
+        return {"error": "Location not found"}
+
     soup = BeautifulSoup(response.content, 'html.parser')
 
     places_divs = soup.find_all('div', 'col-12 col-md-6 pr-md-3')
