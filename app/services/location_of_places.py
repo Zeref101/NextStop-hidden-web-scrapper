@@ -12,8 +12,8 @@ def get_location_type(location: str):
 
         # print(address)
 
-        state = address.get("state").lower()
-        country = address.get("country").lower()
+        state = address.get("state", "").lower()
+        country = address.get("country", "").lower()
         city_or_rural = address.get("city") or address. get(
             "town") or address.get("village") or address.get("county")
 
