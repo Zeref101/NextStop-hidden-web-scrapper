@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 import requests
+import json
 
 
 def find_places_in_place_name(location: str):
@@ -8,7 +9,8 @@ def find_places_in_place_name(location: str):
     response = requests.get(url)
 
     if response.status_code == 404:
-        return {"error": "Location not found"}
+        print("ERRORRRRRRRRRRRRRRRRRRRRRRRRR")
+        return json.dumps({"error": "Location not found"})
 
     soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -25,11 +27,15 @@ def find_places_in_place_name(location: str):
         description = div.find('p', class_='card-text').text.strip()
 
         places_dict = {
-            'title': title,
-            'img_url': img_url,
-            'description': description
+            "title": title,
+            "img_url": img_url,
+            "description": description
         }
 
         places_info.append(places_dict)
 
-    return places_info
+    json_string = json.dumps(places_info, ensure_ascii=False)
+
+    print(type(json_string))
+
+    return json_string
