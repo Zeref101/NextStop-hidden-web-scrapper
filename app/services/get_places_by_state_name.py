@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 import requests
+import json
 
 
 def find_places_in_state_name(location: str):
@@ -15,7 +16,7 @@ def find_places_in_state_name(location: str):
         response = requests.get(url2)
 
     if response.status_code == 404:
-        return {"error": "Location not found"}
+        return json.dumps({"error": "Location not found"})
 
     soup = BeautifulSoup(response.content, 'html.parser')
 
@@ -40,4 +41,6 @@ def find_places_in_state_name(location: str):
 
         places_info.append(places_dict)
 
-    return places_info
+    json_string = json.dumps(places_info, ensure_ascii=False)
+
+    return json_string
