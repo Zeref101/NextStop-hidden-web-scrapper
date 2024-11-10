@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.places_to_visit import router as placesToVisit_router
 
@@ -18,6 +18,14 @@ app.add_middleware(
 
 
 app.include_router(placesToVisit_router)
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    print("Server has started, waiting for requests...")
+    print(f"Incoming request: {request.method} {request.url}")
+    response = await call_next(request)
+    return response
 
 
 @app.get("/")

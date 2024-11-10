@@ -1,18 +1,15 @@
 from bs4 import BeautifulSoup
 import requests
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 from app.services.location_of_places import get_location_type
 from app.services.get_places_by_place_name import find_places_in_place_name
 from app.services.get_places_by_state_name import find_places_in_state_name
 from app.services.get_places_by_country_name import find_places_in_country_name
-from dotenv import load_dotenv
 import os
 import json
+import gzip
 
 router = APIRouter()
-
-load_dotenv()
-BACKEND_SERVER = os.getenv("BACKEND_SERVER")
 
 
 @router.get("/places/{location}")
@@ -37,11 +34,15 @@ async def get_places_to_visit(location: str):
         }
 
         res_list = json.loads(res)
-        response = requests.post(
-            f"http://localhost:7000/placesInfo/place", json=res_list, headers=headers)
 
-        response.raise_for_status()
+        res_json = json.dumps({"places_info": res_list})
 
+        # Compress the data
+        compressed_data = gzip.compress(res_json.encode('utf-8'))
+
+        return Response(content=compressed_data, media_type="application/json", headers={"Content-Encoding": "gzip"})
     except requests.exceptions.RequestException as e:
 
         print(f"Error posting to http://localhost:7000/placesInfo/place: {e}")
+        raise HTTPException(
+            status_code=500, detail="Failed to retrieve places information")
