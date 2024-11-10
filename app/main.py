@@ -1,6 +1,8 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from app.routes.places_to_visit import router as placesToVisit_router
+from app.routes.food import router as food_router
+from app.routes.best_time import router as best_time_router
 
 app = FastAPI()
 
@@ -16,8 +18,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 app.include_router(placesToVisit_router)
+app.include_router(food_router)
+app.include_router(best_time_router)
 
 
 @app.middleware("http")
