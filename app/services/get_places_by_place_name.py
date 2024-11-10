@@ -5,7 +5,8 @@ import json
 
 
 def find_places_in_place_name(location: str):
-    url = f"https://www.holidify.com/places/{location}/sightseeing-and-things-to-do.html"
+    url = f"https://www.holidify.com/places/{
+        location}/sightseeing-and-things-to-do.html"
     response = requests.get(url)
 
     if response.status_code == 404:
