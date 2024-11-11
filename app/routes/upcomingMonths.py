@@ -63,9 +63,13 @@ def getPlacesByMonths(month: str):
                 title = title.get_text(
                     strip=True) if title else "No title found"
 
-                # Extract image (from the first slide in the slick slider)
+                # Extract image URL
                 image = card.find('img', class_='card-img-top')
-                image_url = image['src'] if image else "No image found"
+                image_url = (
+                    image.get('data-original') if image and image.get('data-original')
+                    else image.get('src') if image
+                    else "No image found"
+                )
 
                 # Extract description
                 description = card.find('p', class_='card-text')
